@@ -1,3 +1,4 @@
 yarn compile
 yarn format
+yarn lint
 yarn test
