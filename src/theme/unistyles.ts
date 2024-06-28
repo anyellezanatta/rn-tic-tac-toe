@@ -1,16 +1,16 @@
 import { UnistylesRegistry } from "react-native-unistyles";
 
-import { darkTheme } from "./theme";
+import { theme } from "./theme";
 
 type AppThemes = {
-  dark: typeof darkTheme;
+  dark: typeof theme;
 };
 declare module "react-native-unistyles" {
   export interface UnistylesThemes extends AppThemes {}
 }
 
 UnistylesRegistry.addThemes({
-  dark: darkTheme,
+  dark: theme,
 }).addConfig({
   adaptiveThemes: true,
 });
