@@ -9,7 +9,7 @@
     "prebuild:clean": "expo prebuild --clean",
     "android": "expo run:android",
     "android:release": "expo run:android --variant release",
-    "ios": "expo run:ios",
+    "ios": "rm -f ios/.xcode.env.local && expo run:ios",
     "ios:release": "rm -f ios/.xcode.env.local && expo run:ios --configuration Release",
     "compile": "tsc",
     "lint": "eslint .",
@@ -22,6 +22,7 @@
   "dependencies": {
     "expo": "~51.0.14",
     "expo-dev-client": "^4.0.18",
+    "expo-font": "~12.0.7",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "^3.0.6",
     "react": "18.2.0",
