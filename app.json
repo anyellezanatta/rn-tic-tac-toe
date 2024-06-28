@@ -24,7 +24,16 @@
     },
     "plugins": [
       "expo-dev-launcher",
-      "expo-font"
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Outfit-Regular.ttf",
+            "./assets/fonts/Outfit-Medium.ttf",
+            "./assets/fonts/Outfit-Bold.ttf"
+          ]
+        }
+      ]
     ]
   }
 }
