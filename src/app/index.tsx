@@ -3,7 +3,7 @@ import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { Text } from "@/components/Text";
 
-const NewGameMenu = () => {
+const NewGameMenuPage = () => {
   const { styles } = useStyles(stylesheet);
 
   return (
@@ -24,4 +24,4 @@ const stylesheet = createStyleSheet((theme) => ({
   },
 }));
 
-export default NewGameMenu;
+export default NewGameMenuPage;

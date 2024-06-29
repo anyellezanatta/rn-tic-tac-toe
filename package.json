@@ -17,7 +17,8 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "test": "jest --passWithNoTests",
-    "prepare": "husky"
+    "prepare": "husky",
+    "storybook-generate": "sb-rn-get-stories"
   },
   "dependencies": {
     "expo": "~51.0.17",
@@ -41,13 +42,22 @@
     "@babel/core": "^7.20.0",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-community/datetimepicker": "^8.1.1",
+    "@react-native-community/slider": "^4.5.2",
+    "@storybook/addon-ondevice-actions": "^7.6.20",
+    "@storybook/addon-ondevice-controls": "^7.6.20",
+    "@storybook/react-native": "^7.6.20",
     "@types/react": "~18.2.45",
+    "@types/react-dom": "^18",
+    "babel-loader": "^8.3.0",
     "eslint": "^8.57.0",
     "eslint-config-universe": "^12.0.0",
     "husky": "^9.0.11",
     "jest": "^29.7.0",
     "jest-expo": "~51.0.3",
     "prettier": "^3.3.2",
+    "react-dom": "18.2.0",
     "typescript": "~5.3.3"
   },
   "prettier": {
@@ -124,6 +134,7 @@
     }
   },
   "eslintIgnore": [
+    "*.config.js",
     "node_modules",
     ".expo",
     ".yarn",
