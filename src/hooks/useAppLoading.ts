@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useEffect } from "react";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -12,15 +12,18 @@ export const useAppLoading = () => {
     "Outfit-Bold": require("../../assets/fonts/Outfit-Bold.ttf"),
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
-    }
+  useEffect(() => {
+    const handleLoadingFinish = async () => {
+      if (fontsLoaded || fontError) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    handleLoadingFinish();
   }, [fontsLoaded, fontError]);
 
   return {
     isLoaded: fontsLoaded,
     isError: fontError,
-    onLayoutRootView,
   };
 };
