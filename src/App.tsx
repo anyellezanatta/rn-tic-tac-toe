@@ -1,18 +1,16 @@
 import "@/theme/unistyles";
 
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { StatusBar } from "expo-status-bar";
 
-import { IconButton } from "@/components/IconButton";
+import { Text } from "@/components/Text";
 import { useAppLoading } from "@/hooks/useAppLoading";
-
-import { IconO } from "./components/Icon/IconO";
 
 export const App = () => {
   const { isLoaded, isError, onLayoutRootView } = useAppLoading();
-  const { styles, theme } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet);
 
   if (!isLoaded && !isError) {
     return null;
@@ -21,11 +19,9 @@ export const App = () => {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <StatusBar style="auto" />
-      <Text style={[theme.typography.hl, { color: theme.colors.silver }]}>
+      <Text variant="hl" color="red">
         LOREM IPSUM DOLOR
       </Text>
-      <IconButton />
-      <IconO width={24} height={24} />
     </View>
   );
 };
