@@ -1,6 +1,8 @@
 node_modules
 .expo
+.husky
 .yarn
+.storybook
 assets
 android
 ios
