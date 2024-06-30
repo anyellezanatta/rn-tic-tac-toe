@@ -1,6 +1,12 @@
 import type { FC } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import type { UnistylesVariants } from "react-native-unistyles";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
@@ -16,6 +22,8 @@ export type ButtonProps = UnistylesVariants<typeof stylesheet> & {
 
 type ButtonSize = Exclude<ButtonProps["size"], undefined>;
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export const Button: FC<ButtonProps> = (props) => {
   const {
     title,
@@ -26,7 +34,9 @@ export const Button: FC<ButtonProps> = (props) => {
     disabled,
   } = props;
 
-  const { styles } = useStyles(stylesheet, {
+  const pressed = useSharedValue<number>(0);
+
+  const { styles, theme } = useStyles(stylesheet, {
     color,
     size,
   });
@@ -36,13 +46,61 @@ export const Button: FC<ButtonProps> = (props) => {
     secondary: "xs",
   };
 
+  const animatedStyles = useAnimatedStyle(() => {
+    const interpolateState = (normalColor: string, pressedColor: string) => {
+      return interpolateColor(
+        pressed.value,
+        [0, 1],
+        [normalColor, pressedColor],
+      );
+    };
+
+    switch (color) {
+      case "yellow":
+        return {
+          backgroundColor: interpolateState(
+            theme.colors.yellow,
+            theme.hovers.yellow,
+          ),
+        };
+      case "lightBlue":
+        return {
+          backgroundColor: interpolateState(
+            theme.colors.lightBlue,
+            theme.hovers.lightBlue,
+          ),
+        };
+      case "silver":
+        return {
+          backgroundColor: interpolateState(
+            theme.colors.silver,
+            theme.hovers.silver,
+          ),
+        };
+      default:
+        throw new Error("Invalid color");
+    }
+  });
+
+  const animateTo = (to: number) => {
+    pressed.value = withTiming(to, { duration: 100 });
+  };
+
   return (
     <View style={[styles.innerShadow, style]}>
-      <Pressable style={styles.container} onPress={onPress} disabled={disabled}>
-        <Text variant={textVariant[size]} color={styles.text.color}>
+      <AnimatedPressable
+        style={[styles.container, animatedStyles]}
+        onPressIn={() => animateTo(1)}
+        onPressOut={() => animateTo(0)}
+        onPress={onPress}
+        disabled={disabled}>
+        <Text
+          numberOfLines={1}
+          variant={textVariant[size]}
+          color={styles.text.color}>
           {title}
         </Text>
-      </Pressable>
+      </AnimatedPressable>
     </View>
   );
 };
@@ -76,18 +134,13 @@ const stylesheet = createStyleSheet((theme) => ({
     padding: theme.spacing.$4,
     borderRadius: theme.spacing.$4,
     variants: {
-      color: {
-        yellow: {
-          backgroundColor: theme.colors.yellow,
-        },
-        lightBlue: {
-          backgroundColor: theme.colors.lightBlue,
-        },
-        silver: {
-          backgroundColor: theme.colors.silver,
+      color: {},
+      size: {
+        primary: {},
+        secondary: {
+          paddingBottom: theme.spacing.$3,
         },
       },
-      size: {},
     },
   },
   text: {
