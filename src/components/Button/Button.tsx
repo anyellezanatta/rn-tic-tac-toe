@@ -10,17 +10,22 @@ import Animated, {
 import type { UnistylesVariants } from "react-native-unistyles";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
+import { Icon, type IconName, type IconProps } from "@/components/Icon";
 import type { TextProps } from "@/components/Text";
 import { Text } from "@/components/Text";
 
 export type ButtonProps = UnistylesVariants<typeof stylesheet> & {
   title?: string;
+  icon?: IconName;
+  IconProps?: Omit<IconProps, "icon">;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   disabled?: boolean;
 };
 
-type ButtonSize = Exclude<ButtonProps["size"], undefined>;
+export type ButtonSize = Exclude<ButtonProps["size"], undefined>;
+
+export type ButtonColor = Exclude<ButtonProps["color"], undefined>;
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -29,6 +34,8 @@ export const Button: FC<ButtonProps> = (props) => {
     title,
     color = "yellow",
     size = "primary",
+    icon,
+    IconProps,
     style,
     onPress,
     disabled,
@@ -94,12 +101,15 @@ export const Button: FC<ButtonProps> = (props) => {
         onPressOut={() => animateTo(0)}
         onPress={onPress}
         disabled={disabled}>
-        <Text
-          numberOfLines={1}
-          variant={textVariant[size]}
-          color={styles.text.color}>
-          {title}
-        </Text>
+        {!!icon && <Icon icon={icon} {...IconProps} />}
+        {!!title && (
+          <Text
+            numberOfLines={1}
+            variant={textVariant[size]}
+            color={styles.text.color}>
+            {title}
+          </Text>
+        )}
       </AnimatedPressable>
     </View>
   );
@@ -131,6 +141,9 @@ const stylesheet = createStyleSheet((theme) => ({
     },
   },
   container: {
+    flexDirection: "row",
+    gap: theme.spacing.$2,
+    alignItems: "center",
     padding: theme.spacing.$4,
     borderRadius: theme.spacing.$4,
     variants: {
