@@ -10,13 +10,15 @@ export type TextProps = RNTextProps & {
   color?: ColorValue;
 };
 
-export const Text: FC<TextProps> = ({ variant, color, style, ...props }) => {
+export const Text: FC<TextProps> = (props) => {
+  const { variant, color, style, ...rest } = props;
+
   const { styles } = useStyles(stylesheet, {
     variant,
   });
 
   return (
-    <RNText {...props} style={[styles.text, { color }, style]}>
+    <RNText {...rest} style={[styles.text, { color }, style]}>
       {props.children}
     </RNText>
   );

@@ -6,6 +6,7 @@ export const spacing = {
   $5: 20,
   $6: 24,
   $8: 32,
+  $10: 40,
   $12: 48,
   $16: 64,
 } as const;
