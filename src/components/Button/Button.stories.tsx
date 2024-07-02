@@ -3,9 +3,12 @@ import { View } from "react-native";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Icons } from "@/components/Icon";
+import type {
+  ShadowedViewColor,
+  ShadowedViewSize,
+} from "@/components/ShadowedView";
 import { colors } from "@/theme/colors";
 
-import type { ButtonColor, ButtonSize } from "./Button";
 import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
@@ -28,11 +31,11 @@ const meta: Meta<typeof Button> = {
     },
     color: {
       control: "radio",
-      options: ["yellow", "lightBlue", "silver"] as ButtonColor[],
+      options: ["yellow", "lightBlue", "silver"] as ShadowedViewColor[],
     },
     size: {
       control: "radio",
-      options: ["primary", "secondary"] as ButtonSize[],
+      options: ["primary", "secondary"] as ShadowedViewSize[],
     },
   },
   decorators: [
