@@ -1,13 +1,12 @@
-import type { FC, ReactNode } from "react";
+import type { FC } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
-import { Pressable, View } from "react-native";
-import Animated, {
+import { Pressable } from "react-native";
+import {
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import type { UnistylesVariants } from "react-native-unistyles";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { Icon, type IconName, type IconProps } from "@/components/Icon";
