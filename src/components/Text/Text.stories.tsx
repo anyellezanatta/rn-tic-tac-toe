@@ -5,53 +5,54 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { colors } from "@/theme/colors";
 import { typography } from "@/theme/typography";
 
-import { Text } from "./Text";
+import type { TextColor } from "./Text";
+import { Text as TextComponent } from "./Text";
 
 const variants = Object.keys(typography) as (keyof typeof typography)[];
 
-const meta: Meta<typeof Text> = {
-  title: "Text",
-  component: Text,
+const colorOptions: TextColor[] = [
+  "silver",
+  "darkNavy",
+  "semiDarkNavy",
+  "lightBlue",
+  "yellow",
+];
+
+const meta: Meta<typeof TextComponent> = {
+  title: "Design System/Text",
+  component: TextComponent,
   args: {
     children: "Cool Text!",
-    color: colors.silver,
+    color: "silver",
+  },
+  argTypes: {
+    color: {
+      control: "radio",
+      options: colorOptions,
+    },
   },
   render: (props) => {
     return (
       <>
         {variants.map((variant) => (
           <View key={variant} style={{ alignItems: "center" }}>
-            <Text variant="body" color={colors.silver}>
+            <TextComponent variant="body" color="silver">
               {variant}
-            </Text>
+            </TextComponent>
             <View
               key={variant}
               style={{ borderWidth: 1, borderColor: colors.lightBlue }}>
-              <Text {...props} variant={variant} />
+              <TextComponent {...props} variant={variant} />
             </View>
           </View>
         ))}
       </>
     );
   },
-  decorators: [
-    (Story) => (
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          gap: 8,
-          backgroundColor: colors.darkNavy,
-        }}>
-        <Story />
-      </View>
-    ),
-  ],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Text>;
+type Story = StoryObj<typeof TextComponent>;
 
-export const Variants: Story = {};
+export const Text: Story = {};

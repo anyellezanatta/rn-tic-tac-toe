@@ -2,14 +2,12 @@ import { View } from "react-native";
 
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Icon } from "@/components/Icon/Icon";
-import { colors } from "@/theme/colors";
-
+import { Icon as IconComponent } from "./Icon";
 import { Icons } from "./icons";
 
-const meta: Meta<typeof Icon> = {
-  title: "Icon",
-  component: Icon,
+const meta: Meta<typeof IconComponent> = {
+  title: "Design System/Icon",
+  component: IconComponent,
   args: {
     icon: "IconO",
     size: "$10",
@@ -32,28 +30,14 @@ const meta: Meta<typeof Icon> = {
           backgroundColor: "black",
           borderRadius: 16,
         }}>
-        <Icon {...props} />
+        <IconComponent {...props} />
       </View>
     );
   },
-  decorators: [
-    (Story) => (
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          gap: 8,
-          backgroundColor: colors.darkNavy,
-        }}>
-        <Story />
-      </View>
-    ),
-  ],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Icon>;
+type Story = StoryObj<typeof IconComponent>;
 
-export const Basic: Story = {};
+export const Icon: Story = {};

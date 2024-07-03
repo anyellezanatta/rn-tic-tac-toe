@@ -1,24 +1,23 @@
 import type { FC } from "react";
-import type { ColorValue, TextProps as RNTextProps } from "react-native";
+import type { TextProps as RNTextProps } from "react-native";
 import { Text as RNText } from "react-native";
+import type { UnistylesVariants } from "react-native-unistyles";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
-import type { typography } from "@/theme/typography";
+export type TextProps = RNTextProps & UnistylesVariants<typeof stylesheet>;
 
-export type TextProps = RNTextProps & {
-  variant: keyof typeof typography;
-  color?: ColorValue;
-};
+export type TextColor = Exclude<TextProps["color"], undefined>;
 
 export const Text: FC<TextProps> = (props) => {
-  const { variant, color, style, ...rest } = props;
+  const { variant = "body", color = "silver", style, ...rest } = props;
 
   const { styles } = useStyles(stylesheet, {
     variant,
+    color,
   });
 
   return (
-    <RNText {...rest} style={[styles.text, { color }, style]}>
+    <RNText {...rest} style={[styles.text, style]}>
       {props.children}
     </RNText>
   );
@@ -28,6 +27,23 @@ const stylesheet = createStyleSheet((theme) => ({
   text: {
     variants: {
       variant: theme.typography,
+      color: {
+        yellow: {
+          color: theme.colors.yellow,
+        },
+        lightBlue: {
+          color: theme.colors.lightBlue,
+        },
+        silver: {
+          color: theme.colors.silver,
+        },
+        semiDarkNavy: {
+          color: theme.colors.semiDarkNavy,
+        },
+        darkNavy: {
+          color: theme.colors.darkNavy,
+        },
+      },
     },
   },
 }));

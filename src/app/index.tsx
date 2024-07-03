@@ -8,9 +8,7 @@ const NewGameMenuPage = () => {
 
   return (
     <View style={styles.container}>
-      <Text variant="hl" color="red">
-        LOREM IPSUM DOLOR
-      </Text>
+      <Text variant="hl">LOREM IPSUM DOLOR</Text>
     </View>
   );
 };

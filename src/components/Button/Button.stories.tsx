@@ -1,5 +1,3 @@
-import { View } from "react-native";
-
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Icons } from "@/components/Icon";
@@ -7,13 +5,12 @@ import type {
   ShadowedViewColor,
   ShadowedViewSize,
 } from "@/components/ShadowedView";
-import { colors } from "@/theme/colors";
 
-import { Button } from "./Button";
+import { Button as ButtonComponent } from "./Button";
 
-const meta: Meta<typeof Button> = {
-  title: "Button",
-  component: Button,
+const meta: Meta<typeof ButtonComponent> = {
+  title: "Design System/Button",
+  component: ButtonComponent,
   args: {
     color: "yellow",
     size: "primary",
@@ -38,24 +35,10 @@ const meta: Meta<typeof Button> = {
       options: ["primary", "secondary"] as ShadowedViewSize[],
     },
   },
-  decorators: [
-    (Story) => (
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          gap: 8,
-          backgroundColor: colors.darkNavy,
-        }}>
-        <Story />
-      </View>
-    ),
-  ],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof ButtonComponent>;
 
-export const Basic: Story = {};
+export const Button: Story = {};

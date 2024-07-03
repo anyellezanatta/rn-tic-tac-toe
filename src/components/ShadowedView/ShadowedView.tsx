@@ -20,7 +20,7 @@ export const ShadowedView: FC<ShadowedViewProps> = (props) => {
   const {
     size = "primary",
     color = "semiDarkNavy",
-    borderRadius = 8,
+    borderRadius = 12,
     style,
     containerStyle,
     children,
@@ -70,7 +70,6 @@ const stylesheet = createStyleSheet((theme) => ({
     },
   },
   container: {
-    flexDirection: "row",
     gap: theme.spacing.$2,
     alignItems: "center",
     padding: theme.spacing.$4,

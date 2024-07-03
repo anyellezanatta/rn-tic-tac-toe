@@ -44,7 +44,7 @@ export const Button: FC<ButtonProps> = (props) => {
 
   const pressed = useSharedValue<number>(0);
 
-  const { styles, theme } = useStyles(stylesheet);
+  const { theme, styles } = useStyles(stylesheet);
 
   const animatedStyles = useAnimatedStyle(() => {
     const interpolateState = (normalColor: string, pressedColor: string) => {
@@ -89,7 +89,7 @@ export const Button: FC<ButtonProps> = (props) => {
 
   const borderRadius: Record<ShadowedViewSize, number> = {
     primary: theme.spacing.$4,
-    secondary: theme.spacing.$2,
+    secondary: theme.spacing.$3,
   };
 
   const animateTo = (to: number) => {
@@ -106,14 +106,11 @@ export const Button: FC<ButtonProps> = (props) => {
       <ShadowedView
         size={size}
         color={color}
-        containerStyle={animatedStyles}
+        containerStyle={[styles.buttonContent, animatedStyles]}
         borderRadius={borderRadius[size]}>
         {!!icon && <Icon icon={icon} {...IconProps} />}
         {!!title && (
-          <Text
-            numberOfLines={1}
-            variant={textVariant[size]}
-            color={styles.text.color}>
+          <Text numberOfLines={1} variant={textVariant[size]} color="darkNavy">
             {title}
           </Text>
         )}
@@ -122,8 +119,8 @@ export const Button: FC<ButtonProps> = (props) => {
   );
 };
 
-const stylesheet = createStyleSheet((theme) => ({
-  text: {
-    color: theme.colors.darkNavy,
+const stylesheet = createStyleSheet({
+  buttonContent: {
+    flexDirection: "row",
   },
-}));
+});

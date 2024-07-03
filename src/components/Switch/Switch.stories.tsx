@@ -5,11 +5,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Icons } from "@/components/Icon";
 import { colors } from "@/theme/colors";
 
-import { Switch } from "./Switch";
+import { Switch as SwitchComponent } from "./Switch";
 
-const meta: Meta<typeof Switch> = {
-  title: "Switch",
-  component: Switch,
+const meta: Meta<typeof SwitchComponent> = {
+  title: "Design System/Switch",
+  component: SwitchComponent,
   args: {
     iconLeft: "IconX",
     iconRight: "IconO",
@@ -32,28 +32,14 @@ const meta: Meta<typeof Switch> = {
           backgroundColor: colors.semiDarkNavy,
           borderRadius: 16,
         }}>
-        <Switch {...props} />
+        <SwitchComponent {...props} />
       </View>
     );
   },
-  decorators: [
-    (Story) => (
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          gap: 8,
-          backgroundColor: colors.darkNavy,
-        }}>
-        <Story />
-      </View>
-    ),
-  ],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Switch>;
+type Story = StoryObj<typeof SwitchComponent>;
 
-export const Basic: Story = {};
+export const Switch: Story = {};

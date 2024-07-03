@@ -6,7 +6,7 @@ export const Logo = (props: SvgProps) => {
   const { theme } = useStyles();
 
   return (
-    <Svg width={72} height={32} {...props}>
+    <Svg width={72} height={32} viewBox="0 0 72 32" {...props}>
       <G fill="none" fillRule="evenodd">
         <Path
           fill={theme.colors.lightBlue}

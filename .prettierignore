@@ -2,7 +2,7 @@ node_modules
 .expo
 .husky
 .yarn
-.storybook
+.storybook/storybook.requires.ts
 assets
 android
 ios
