@@ -71,7 +71,6 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   container: {
     gap: theme.spacing.$2,
-    alignItems: "center",
     padding: theme.spacing.$4,
     variants: {
       color: {

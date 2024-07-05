@@ -121,5 +121,7 @@ export const Button: FC<ButtonProps> = (props) => {
 const stylesheet = createStyleSheet({
   buttonContent: {
     flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

@@ -5,8 +5,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import { ThemeProvider } from "@react-navigation/native";
+
 import { useAppLoading } from "@/hooks/useAppLoading";
 import { useDevMenu } from "@/hooks/useDevMenu";
+import { DarkNavigationTheme } from "@/theme/navigation";
 
 const AppLayout = () => {
   useDevMenu();
@@ -20,9 +23,11 @@ const AppLayout = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </SafeAreaProvider>
+      <ThemeProvider value={DarkNavigationTheme}>
+        <SafeAreaProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </SafeAreaProvider>
+      </ThemeProvider>
     </>
   );
 };

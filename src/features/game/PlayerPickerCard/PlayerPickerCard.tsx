@@ -24,6 +24,7 @@ const stylesheet = createStyleSheet((theme) => ({
   container: {
     padding: theme.spacing.$6,
     gap: theme.spacing.$4,
+    alignItems: "center",
   },
   switch: {
     marginTop: theme.spacing.$2,
