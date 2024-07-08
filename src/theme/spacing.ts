@@ -9,4 +9,6 @@ export const spacing = {
   $10: 40,
   $12: 48,
   $16: 64,
+  $20: 80,
+  $24: 96,
 } as const;

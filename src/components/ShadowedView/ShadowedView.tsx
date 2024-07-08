@@ -10,6 +10,7 @@ type ShadowedViewProps = UnistylesVariants<typeof stylesheet> & {
   containerStyle?: ComponentProps<Animated.View>["style"];
   children?: ReactNode;
   borderRadius?: number;
+  isShadowed?: boolean;
 };
 
 export type ShadowedViewSize = Exclude<ShadowedViewProps["size"], undefined>;
@@ -24,6 +25,7 @@ export const ShadowedView: FC<ShadowedViewProps> = (props) => {
     style,
     containerStyle,
     children,
+    isShadowed = true,
     ...rest
   } = props;
 
@@ -33,7 +35,9 @@ export const ShadowedView: FC<ShadowedViewProps> = (props) => {
   });
 
   return (
-    <View style={[styles.innerShadow, { borderRadius }, style]} {...rest}>
+    <View
+      style={[styles.innerShadow(isShadowed), { borderRadius }, style]}
+      {...rest}>
       <Animated.View
         style={[styles.container, { borderRadius }, containerStyle]}>
         {children}
@@ -43,7 +47,7 @@ export const ShadowedView: FC<ShadowedViewProps> = (props) => {
 };
 
 const stylesheet = createStyleSheet((theme) => ({
-  innerShadow: {
+  innerShadow: (isShadowed: boolean) => ({
     variants: {
       color: {
         yellow: {
@@ -61,14 +65,14 @@ const stylesheet = createStyleSheet((theme) => ({
       },
       size: {
         primary: {
-          paddingBottom: theme.spacing.$2,
+          paddingBottom: isShadowed ? theme.spacing.$2 : 0,
         },
         secondary: {
-          paddingBottom: theme.spacing.$1,
+          paddingBottom: isShadowed ? theme.spacing.$1 : 0,
         },
       },
     },
-  },
+  }),
   container: {
     gap: theme.spacing.$2,
     padding: theme.spacing.$4,
