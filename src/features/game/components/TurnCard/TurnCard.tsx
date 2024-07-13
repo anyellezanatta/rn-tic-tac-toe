@@ -30,5 +30,6 @@ const stylesheet = createStyleSheet((theme) => ({
     flexDirection: "row",
     alignItems: "center",
     gap: theme.spacing.$2,
+    paddingVertical: theme.spacing.$2,
   },
 }));
