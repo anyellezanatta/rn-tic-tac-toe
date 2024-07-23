@@ -4,22 +4,37 @@ import { View } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { Button } from "@/components/Button";
+import type { IconName } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { TurnCard } from "@/features/game/components/TurnCard";
 import { useGame } from "@/features/game/hooks/useGame";
+import type { PlayerMark } from "@/features/game/store/gameSlice";
 
 type GameHeaderProps = {
   style?: StyleProp<ViewStyle>;
 };
 
+const icons: Record<PlayerMark, IconName> = {
+  X: "IconX",
+  O: "IconO",
+};
+
 export const GameHeader: FC<GameHeaderProps> = ({ style }) => {
   const { styles } = useStyles(stylesheet);
-  const { turn, restart } = useGame();
+  const { turn, player1Mark, restart } = useGame();
 
   return (
     <View style={[styles.container, style]}>
       <Logo style={styles.logo} />
-      <TurnCard icon={turn.board === "X" ? "IconX" : "IconO"} />
+      <TurnCard
+        icon={
+          turn === "p1"
+            ? icons[player1Mark!]
+            : player1Mark === "X"
+              ? "IconX"
+              : "IconO"
+        }
+      />
       <Button
         style={styles.restartButton}
         size="secondary"

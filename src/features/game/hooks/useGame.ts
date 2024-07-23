@@ -1,8 +1,16 @@
+import type { OpponentType, PlayerMark } from "@/features/game/store/gameSlice";
 import {
   gameRestart,
-  performPlay,
+  assignPlayer1,
+  quitGame,
+  selectGamePlayer1Mark,
+  selectGameScore,
   selectGameTable,
   selectGameTurn,
+  selectOpponent,
+  selectGameWinner,
+  playTurn,
+  assignOpponent,
 } from "@/features/game/store/gameSlice";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -11,14 +19,42 @@ export const useGame = () => {
   const dispatch = useAppDispatch();
   const turn = useAppSelector(selectGameTurn);
   const table = useAppSelector(selectGameTable);
+  const score = useAppSelector(selectGameScore);
+  const player1Mark = useAppSelector(selectGamePlayer1Mark);
+  const winner = useAppSelector(selectGameWinner);
+  const opponent = useAppSelector(selectOpponent);
 
   const play = (line: number, column: number) => {
-    dispatch(performPlay({ line, column }));
+    dispatch(playTurn({ line, column }));
+  };
+
+  const quit = () => {
+    dispatch(quitGame({}));
   };
 
   const restart = () => {
     dispatch(gameRestart({}));
   };
 
-  return { turn, table, play, restart };
+  const pickPlayer1Mark = (symbol: PlayerMark) => {
+    dispatch(assignPlayer1({ symbol }));
+  };
+
+  const newGame = (opponent: OpponentType) => {
+    dispatch(assignOpponent({ opponent }));
+  };
+
+  return {
+    turn,
+    table,
+    score,
+    player1Mark,
+    winner,
+    opponent,
+    play,
+    restart,
+    quit,
+    pickPlayer1Mark,
+    newGame,
+  };
 };

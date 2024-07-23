@@ -1,84 +1,131 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { AppThunk, RootState } from "@/store/store";
+import { startAppListening } from "@/store/listenerMiddleware";
+import type { RootState } from "@/store/store";
 
-export type GameBoard = "X" | "O" | undefined;
+export type PlayerMark = "X" | "O";
 
-export type GameType = "vsCPU" | "vsPlayer";
+export type OpponentType = "p2" | "cpu";
 
-export type Player = { board: GameBoard; score: number };
-
-export type Turn = { board: GameBoard; count: number };
+export type PlayerType = "p1" | OpponentType;
 
 export type GameState = {
-  gameType: GameType;
-  player1: Player;
-  player2: Player;
-  ties: number;
-  table: GameBoard[][];
-  turn: Turn;
-  winner?: Player;
+  gameState: PlayerType[][];
+  score: { player1: number; opponent: number; ties: number };
+  player1Mark?: PlayerMark;
+  opponent?: OpponentType;
+  turn?: PlayerType;
+  winner?: PlayerType | "tie";
 };
 
 const initialState: GameState = {
-  gameType: "vsCPU",
-  player1: { board: "X", score: 0 },
-  player2: { board: "O", score: 0 },
-  ties: 0,
-  turn: { board: "X", count: 0 },
-  table: [
-    [undefined, undefined, undefined],
-    [undefined, undefined, undefined],
-    [undefined, undefined, undefined],
-  ],
+  gameState: Array(3).fill(Array(3).fill(undefined)),
+  score: { player1: 0, opponent: 0, ties: 0 },
+  player1Mark: undefined,
+  opponent: undefined,
+  turn: undefined,
+  winner: undefined,
 };
 
-export const performPlay =
-  (args: { line: number; column: number }): AppThunk =>
-  (dispatch, getState) => {
-    const { line, column } = args;
-    const gameType = getState().game.gameType;
+const changeTurn = (turn: PlayerType, opponent: OpponentType): PlayerType => {
+  return turn === "p1" ? opponent : "p1";
+};
 
-    if (gameType === "vsPlayer") {
-      dispatch(playTurn({ line, column }));
-      dispatch(checkWinner({ line, column }));
-      dispatch(turnSet({}));
+const checkSequence = (sequence: (PlayerType | undefined)[]): boolean => {
+  return sequence.every((cell) => cell === sequence[0]);
+};
+
+const checkLines = (gameState: PlayerType[][]): PlayerType | undefined => {
+  let winner: PlayerType | undefined = undefined;
+
+  gameState.forEach((line) => {
+    if (!winner) {
+      if (checkSequence(line)) {
+        winner = line[0];
+        return winner;
+      }
     }
-    if (gameType === "vsCPU") {
-      dispatch(playTurn({ line, column }));
-      dispatch(checkWinner({ line, column }));
-      dispatch(turnSet({}));
-      dispatch(cpuPlayTurn({}));
-      // TODO: Return line and column from cpuPlayTurn
-      dispatch(checkWinner({ line, column }));
-      dispatch(turnSet({}));
+  });
+
+  return winner;
+};
+
+const checkColumns = (gameState: PlayerType[][]): PlayerType | undefined => {
+  let column: (PlayerType | undefined)[] = [];
+  for (let i = 0; i < 3; i++) {
+    column = [gameState[0]![i], gameState[1]![i], gameState[2]![i]];
+    if (checkSequence(column)) {
+      return column[0];
     }
-  };
+  }
+
+  return undefined;
+};
+
+const checkDiagonals = (gameState: PlayerType[][]): PlayerType | undefined => {
+  const diagonal1 = [gameState[0]![0], gameState[1]![1], gameState[2]![2]];
+  const diagonal2 = [gameState[0]![2], gameState[1]![1], gameState[2]![0]];
+  if (checkSequence(diagonal1)) {
+    return diagonal1[0];
+  }
+  if (checkSequence(diagonal2)) {
+    return diagonal2[0];
+  }
+  return undefined;
+};
+
+const checkTie = (gameState: PlayerType[][]): boolean => {
+  return gameState.every((line) => line.every((cell) => cell !== undefined));
+};
 
 export const gameReducer = createSlice({
   name: "game",
   initialState,
   reducers: {
-    player1Set: (state, action) => {
-      state.player1 = action.payload;
+    assignPlayer1: (state, action: PayloadAction<{ symbol: PlayerMark }>) => {
+      state.player1Mark = action.payload.symbol;
     },
-    player2Set: (state, action) => {
-      state.player2 = action.payload;
+    assignOpponent: (
+      state,
+      action: PayloadAction<{ opponent: OpponentType }>,
+    ) => {
+      state.opponent = action.payload.opponent;
+      if (state.player1Mark === undefined) {
+        state.player1Mark = "X";
+      }
+      state.turn = state.player1Mark === "X" ? "p1" : action.payload.opponent;
     },
-    gameTypeSet: (state, action) => {
-      state.gameType = action.payload;
+    playTurn: (
+      state,
+      action: PayloadAction<{ line: number; column: number }>,
+    ) => {
+      console.log("playTurn");
+      const { line, column } = action.payload;
+      const newTable = [...state.gameState];
+      if (state.turn !== undefined) {
+        newTable[line]![column] = state.turn;
+        state.turn = changeTurn(state.turn, state.opponent!);
+      }
+      state.gameState = newTable;
     },
-    turnSet: (state, action) => {
-      state.turn = {
-        board: state.turn.board === "X" ? "O" : "X",
-        count: state.turn.count + 1,
-      };
+    gameRestart: (state, action) => {
+      state.winner = undefined;
+      state.gameState = initialState.gameState;
+      state.turn = state.player1Mark === "X" ? "p1" : state.opponent;
     },
-    scoreSet: (state, action) => {},
-    // TODO: Implement cpuPlayTurn more intelligently
+    quitGame: (state, action) => {
+      state.winner = initialState.winner;
+      state.gameState = initialState.gameState;
+      state.turn = initialState.turn;
+      state.score = initialState.score;
+      state.player1Mark = initialState.player1Mark;
+      state.opponent = initialState.opponent;
+    },
     cpuPlayTurn: (state, action) => {
-      const newTable = [...state.table];
+      if (checkTie(state.gameState)) return;
+      const { gameState, opponent } = state;
+      const newTable = [...gameState];
       const emptyCells: [number, number][] = [];
       newTable.forEach((line, i) => {
         line.forEach((cell, j) => {
@@ -95,89 +142,38 @@ export const gameReducer = createSlice({
       const randomIndex = Math.floor(Math.random() * emptyCells.length);
 
       const [line, column] = emptyCells[randomIndex]!;
-      newTable[line]![column] = state.turn.board;
-      state.table = newTable;
-    },
-    playTurn: (
-      state,
-      action: PayloadAction<{ line: number; column: number }>,
-    ) => {
-      const { line, column } = action.payload;
-      const newTable = [...state.table];
-      newTable[line]![column] = state.turn.board;
-      state.table = newTable;
-    },
-    gameRestart: (state, action) => {
-      state.table = initialState.table;
-      state.turn = { board: initialState.turn.board, count: state.turn.count };
+      console.log("line", line, "column", column);
+
+      newTable[line]![column] = "cpu";
+
+      console.log("newTable", newTable);
+
+      state.turn = changeTurn("cpu", opponent!);
+      state.gameState = newTable;
     },
     checkWinner: (state, action) => {
-      const { line, column } = action.payload;
+      if (state.winner) return;
 
-      const checkLine = (line: number): GameBoard | undefined => {
-        if (
-          state.table[line]![0] === state.table[line]![1] &&
-          state.table[line]![1] === state.table[line]![2] &&
-          state.table[line]![0] !== undefined &&
-          state.table[line]![1] !== undefined &&
-          state.table[line]![2] !== undefined
-        ) {
-          return state.table[line]![0];
-        }
-      };
+      const { gameState } = state;
 
-      const checkColumn = (column: number): GameBoard | undefined => {
-        if (
-          state.table[0]![column] === state.table[1]![column] &&
-          state.table[1]![column] === state.table[2]![column] &&
-          state.table[0]![column] !== undefined &&
-          state.table[1]![column] !== undefined &&
-          state.table[2]![column] !== undefined
-        ) {
-          return state.table[0]![column];
-        }
-      };
+      const line = checkLines(gameState);
+      const column = checkColumns(gameState);
+      const diagonal = checkDiagonals(gameState);
 
-      const checkDiagonal = (): GameBoard | undefined => {
-        if (
-          state.table[0]![0] === state.table[1]![1] &&
-          state.table[1]![1] === state.table[2]![2] &&
-          state.table[0]![0] !== undefined &&
-          state.table[1]![1] !== undefined &&
-          state.table[2]![2] !== undefined
-        ) {
-          return state.table[0]![0];
-        }
-        if (
-          state.table[0]![2] === state.table[1]![1] &&
-          state.table[1]![1] === state.table[2]![0] &&
-          state.table[0]![2] !== undefined &&
-          state.table[1]![1] !== undefined &&
-          state.table[2]![0] !== undefined
-        ) {
-          return state.table[0]![2];
-        }
-      };
-
-      const winnerLine = checkLine(line);
-      const winnerColumn = checkColumn(column);
-      const winnerDiagonal = checkDiagonal();
-
-      const isWinner = winnerLine || winnerColumn || winnerDiagonal;
+      console.log("line", line, "column", column, "diagonal", diagonal);
+      const isWinner = line || column || diagonal;
+      console.log("isWinner", isWinner);
       if (isWinner) {
-        if (
-          (state.player1.board === "X" && state.turn.board === "X") ||
-          (state.player1.board === "O" && state.turn.board === "O")
-        ) {
-          state.player1.score++;
-          state.winner = state.player1;
+        state.winner = isWinner;
+        if (isWinner === "p1") {
+          state.score.player1 += 1;
+        } else {
+          state.score.opponent += 1;
         }
-        if (
-          (state.player2.board === "O" && state.turn.board === "O") ||
-          (state.player2.board === "X" && state.turn.board === "X")
-        ) {
-          state.player2.score++;
-          state.winner = state.player2;
+      } else {
+        if (checkTie(gameState)) {
+          state.winner = "tie";
+          state.score.ties += 1;
         }
       }
     },
@@ -185,16 +181,40 @@ export const gameReducer = createSlice({
 });
 
 export const {
-  player1Set,
-  player2Set,
-  gameTypeSet,
+  assignPlayer1,
+  assignOpponent,
   playTurn,
-  gameRestart,
-  checkWinner,
-  turnSet,
   cpuPlayTurn,
+  gameRestart,
+  quitGame,
+  checkWinner,
 } = gameReducer.actions;
 
 export const selectGameTurn = (state: RootState) => state.game.turn;
-export const selectGameTable = (state: RootState) => state.game.table;
-export const selectGameType = (state: RootState) => state.game.gameType;
+export const selectGameTable = (state: RootState) => state.game.gameState;
+export const selectOpponent = (state: RootState) => state.game.opponent;
+export const selectGameScore = (state: RootState) => state.game.score;
+export const selectGameWinner = (state: RootState) => state.game.winner;
+export const selectGamePlayer1Mark = (state: RootState) =>
+  state.game.player1Mark;
+
+startAppListening({
+  predicate: (action, currentState, previousState) => {
+    return currentState.game.turn === "cpu" && !currentState.game.winner;
+  },
+  effect: (action, listenerApi) => {
+    listenerApi.dispatch(cpuPlayTurn({}));
+  },
+});
+
+startAppListening({
+  predicate: (action, currentState, previousState) => {
+    return (
+      currentState.game.turn !== previousState.game.turn &&
+      !currentState.game.winner
+    );
+  },
+  effect: (action, listenerApi) => {
+    listenerApi.dispatch(checkWinner({}));
+  },
+});

@@ -5,12 +5,12 @@ import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { Icon } from "@/components/Icon";
 import { ShadowedView } from "@/components/ShadowedView";
-import type { GameBoard } from "@/features/game/store/gameSlice";
+import type { PlayerMark } from "@/features/game/store/gameSlice";
 
-export type GameButtonProps = PressableProps & { assignedMark?: GameBoard };
+export type GameButtonProps = PressableProps & { assignedMark?: PlayerMark };
 
 export const GameButton: FC<GameButtonProps> = (props) => {
-  const { assignedMark, onPress, style } = props;
+  const { assignedMark, onPress, style, disabled } = props;
 
   const { styles, theme } = useStyles(stylesheet);
 
@@ -19,7 +19,7 @@ export const GameButton: FC<GameButtonProps> = (props) => {
       {...props}
       style={style}
       onPress={onPress}
-      disabled={assignedMark !== undefined}>
+      disabled={assignedMark !== undefined || disabled}>
       <ShadowedView
         containerStyle={styles.container}
         borderRadius={theme.spacing.$3}>

@@ -2,15 +2,26 @@ import { View } from "react-native";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { ScoreCard } from "@/features/game/components/Scoreboard/ScoreCard";
+import { useGame } from "@/features/game/hooks/useGame";
 
 export const Scoreboard = () => {
   const { styles } = useStyles(stylesheet);
+  const { score, player1Mark } = useGame();
 
+  console.log("Scoreboard", score);
   return (
     <View style={styles.container}>
-      <ScoreCard title="X (YOU)" score={10} color="lightBlue" />
-      <ScoreCard title="TIES" score={35} color="silver" />
-      <ScoreCard title="O (CPU)" score={22} color="yellow" />
+      <ScoreCard
+        title={player1Mark === "X" ? "X (YOU)" : "X (CPU)"}
+        score={player1Mark === "X" ? score.player1 : score.opponent}
+        color="lightBlue"
+      />
+      <ScoreCard title="TIES" score={score.ties} color="silver" />
+      <ScoreCard
+        title={player1Mark === "O" ? "O (YOU)" : "O (CPU)"}
+        score={player1Mark === "O" ? score.player1 : score.opponent}
+        color="yellow"
+      />
     </View>
   );
 };

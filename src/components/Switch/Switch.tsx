@@ -43,8 +43,9 @@ export const Switch: FC<SwitchControlProps> = (props) => {
   };
 
   const handlePress = () => {
-    setSelectedIndex((oldSelection) => (oldSelection === 0 ? 1 : 0));
-    onChangeValue?.(selectedIndex);
+    const index = selectedIndex === 0 ? 1 : 0;
+    setSelectedIndex(index);
+    onChangeValue?.(index);
   };
 
   const renderItem = (icon: IconName, index: number) => {

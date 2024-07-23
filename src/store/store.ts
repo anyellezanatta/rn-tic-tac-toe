@@ -1,10 +1,13 @@
 import type { ThunkAction, UnknownAction } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 
+import { listenerMiddleware } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
 
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 });
 
 export default store;

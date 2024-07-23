@@ -4,55 +4,39 @@ import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { GameButton } from "@/features/game/components/GameButton";
 import { useGame } from "@/features/game/hooks/useGame";
+import type { PlayerType } from "@/features/game/store/gameSlice";
 
 export const GameTable: FC = () => {
   const { styles } = useStyles(stylesheet);
-  const { play, table } = useGame();
+  const { play, table, winner, player1Mark } = useGame();
+
+  const getMark = (player: PlayerType) => {
+    return player === undefined
+      ? undefined
+      : player === "p1"
+        ? player1Mark
+        : player1Mark === "X"
+          ? "O"
+          : "X";
+  };
+  const generateLines = (line: PlayerType[], lineIndex: number) => {
+    return line.map((player, i) => (
+      <GameButton
+        key={String(player) + i + lineIndex}
+        assignedMark={getMark(player)}
+        onPress={() => play(lineIndex, i)}
+        disabled={!!player || !!winner}
+      />
+    ));
+  };
 
   return (
     <View style={styles.table}>
-      <View style={styles.line}>
-        <GameButton
-          assignedMark={table[0]![0] ?? undefined}
-          onPress={() => play(0, 0)}
-        />
-        <GameButton
-          assignedMark={table[0]![1] ?? undefined}
-          onPress={() => play(0, 1)}
-        />
-        <GameButton
-          assignedMark={table[0]![2] ?? undefined}
-          onPress={() => play(0, 2)}
-        />
-      </View>
-      <View style={styles.line}>
-        <GameButton
-          assignedMark={table[1]![0] ?? undefined}
-          onPress={() => play(1, 0)}
-        />
-        <GameButton
-          assignedMark={table[1]![1] ?? undefined}
-          onPress={() => play(1, 1)}
-        />
-        <GameButton
-          assignedMark={table[1]![2] ?? undefined}
-          onPress={() => play(1, 2)}
-        />
-      </View>
-      <View style={styles.line}>
-        <GameButton
-          assignedMark={table[2]![0] ?? undefined}
-          onPress={() => play(2, 0)}
-        />
-        <GameButton
-          assignedMark={table[2]![1] ?? undefined}
-          onPress={() => play(2, 1)}
-        />
-        <GameButton
-          assignedMark={table[2]![2] ?? undefined}
-          onPress={() => play(2, 2)}
-        />
-      </View>
+      {table.map((line, index) => (
+        <View key={index} style={styles.line}>
+          {generateLines(line, index)}
+        </View>
+      ))}
     </View>
   );
 };
