@@ -22,5 +22,13 @@ export const Icon: FC<IconProps> = (props) => {
 
   const iconSize = theme.spacing[size];
 
-  return <IconComponent width={iconSize} height={iconSize} {...rest} />;
+  return (
+    <IconComponent
+      accessibilityRole="image"
+      accessibilityLabel={icon}
+      width={iconSize}
+      height={iconSize}
+      {...rest}
+    />
+  );
 };

@@ -29,15 +29,15 @@ export const useGame = () => {
   };
 
   const quit = () => {
-    dispatch(quitGame({}));
+    dispatch(quitGame());
   };
 
   const restart = () => {
-    dispatch(gameRestart({}));
+    dispatch(gameRestart());
   };
 
-  const pickPlayer1Mark = (symbol: PlayerMark) => {
-    dispatch(assignPlayer1({ symbol }));
+  const pickPlayer1Mark = (mark: PlayerMark) => {
+    dispatch(assignPlayer1({ mark }));
   };
 
   const newGame = (opponent: OpponentType) => {

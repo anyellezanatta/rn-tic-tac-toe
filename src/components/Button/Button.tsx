@@ -97,6 +97,8 @@ export const Button: FC<ButtonProps> = (props) => {
 
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ disabled }}
       style={style}
       onPressIn={() => animateTo(1)}
       onPressOut={() => animateTo(0)}

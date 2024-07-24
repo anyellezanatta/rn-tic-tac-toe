@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 
 import { startAppListening } from "@/store/listenerMiddleware";
 import type { RootState } from "@/store/store";
@@ -53,6 +53,7 @@ const checkLines = (gameState: PlayerType[][]): PlayerType | undefined => {
 
 const checkColumns = (gameState: PlayerType[][]): PlayerType | undefined => {
   let column: (PlayerType | undefined)[] = [];
+
   for (let i = 0; i < 3; i++) {
     column = [gameState[0]![i], gameState[1]![i], gameState[2]![i]];
     if (checkSequence(column)) {
@@ -65,10 +66,11 @@ const checkColumns = (gameState: PlayerType[][]): PlayerType | undefined => {
 
 const checkDiagonals = (gameState: PlayerType[][]): PlayerType | undefined => {
   const diagonal1 = [gameState[0]![0], gameState[1]![1], gameState[2]![2]];
-  const diagonal2 = [gameState[0]![2], gameState[1]![1], gameState[2]![0]];
   if (checkSequence(diagonal1)) {
     return diagonal1[0];
   }
+
+  const diagonal2 = [gameState[0]![2], gameState[1]![1], gameState[2]![0]];
   if (checkSequence(diagonal2)) {
     return diagonal2[0];
   }
@@ -83,8 +85,8 @@ export const gameReducer = createSlice({
   name: "game",
   initialState,
   reducers: {
-    assignPlayer1: (state, action: PayloadAction<{ symbol: PlayerMark }>) => {
-      state.player1Mark = action.payload.symbol;
+    assignPlayer1: (state, action: PayloadAction<{ mark: PlayerMark }>) => {
+      state.player1Mark = action.payload.mark;
     },
     assignOpponent: (
       state,
@@ -100,33 +102,20 @@ export const gameReducer = createSlice({
       state,
       action: PayloadAction<{ line: number; column: number }>,
     ) => {
+      if (state.turn === "cpu") return;
+
       const { line, column } = action.payload;
-      const newTable = [...state.gameState];
-      if (state.turn !== undefined) {
-        newTable[line]![column] = state.turn;
-        state.turn = changeTurn(state.turn, state.opponent!);
-      }
-      state.gameState = newTable;
+
+      state.gameState[line]![column] = state.turn!;
     },
-    gameRestart: (state, action) => {
-      state.winner = undefined;
-      state.gameState = initialState.gameState;
-      state.turn = state.player1Mark === "X" ? "p1" : state.opponent;
-    },
-    quitGame: (state, action) => {
-      state.winner = initialState.winner;
-      state.gameState = initialState.gameState;
-      state.turn = initialState.turn;
-      state.score = initialState.score;
-      state.player1Mark = initialState.player1Mark;
-      state.opponent = initialState.opponent;
-    },
-    cpuPlayTurn: (state, action) => {
-      if (checkTie(state.gameState)) return;
-      const { gameState, opponent } = state;
-      const newTable = [...gameState];
+    cpuPlayTurn: (state) => {
+      const { gameState } = state;
+
+      if (checkTie(gameState)) return;
+
       const emptyCells: [number, number][] = [];
-      newTable.forEach((line, i) => {
+
+      state.gameState.forEach((line, i) => {
         line.forEach((cell, j) => {
           if (cell === undefined) {
             emptyCells.push([i, j]);
@@ -140,12 +129,22 @@ export const gameReducer = createSlice({
 
       const randomIndex = Math.floor(Math.random() * emptyCells.length);
       const [line, column] = emptyCells[randomIndex]!;
-      newTable[line]![column] = "cpu";
-
-      state.turn = changeTurn("cpu", opponent!);
-      state.gameState = newTable;
+      state.gameState[line]![column] = "cpu";
     },
-    checkWinner: (state, action) => {
+    gameRestart: (state) => {
+      state.winner = undefined;
+      state.gameState = initialState.gameState;
+      state.turn = state.player1Mark === "X" ? "p1" : state.opponent;
+    },
+    quitGame: (state) => {
+      state.winner = initialState.winner;
+      state.gameState = initialState.gameState;
+      state.turn = initialState.turn;
+      state.score = initialState.score;
+      state.player1Mark = initialState.player1Mark;
+      state.opponent = initialState.opponent;
+    },
+    checkWinner: (state) => {
       if (state.winner) return;
 
       const { gameState } = state;
@@ -166,6 +165,8 @@ export const gameReducer = createSlice({
           state.winner = "tie";
           state.score.ties += 1;
         }
+
+        state.turn = changeTurn(state.turn!, state.opponent!);
       }
     },
   },
@@ -190,22 +191,23 @@ export const selectGamePlayer1Mark = (state: RootState) =>
   state.game.player1Mark;
 
 startAppListening({
-  predicate: (action, currentState, previousState) => {
-    return currentState.game.turn === "cpu" && !currentState.game.winner;
+  predicate: (_action, currentState, previousState) => {
+    return (
+      currentState.game.turn === "cpu" &&
+      previousState.game.turn !== "cpu" &&
+      !currentState.game.winner
+    );
   },
-  effect: (action, listenerApi) => {
-    listenerApi.dispatch(cpuPlayTurn({}));
+  effect: async (_action, { dispatch, delay }) => {
+    await delay(1000);
+
+    dispatch(cpuPlayTurn());
   },
 });
 
 startAppListening({
-  predicate: (action, currentState, previousState) => {
-    return (
-      currentState.game.turn !== previousState.game.turn &&
-      !currentState.game.winner
-    );
-  },
-  effect: (action, listenerApi) => {
-    listenerApi.dispatch(checkWinner({}));
+  matcher: isAnyOf(playTurn, cpuPlayTurn),
+  effect: (_action, { dispatch }) => {
+    dispatch(checkWinner());
   },
 });
