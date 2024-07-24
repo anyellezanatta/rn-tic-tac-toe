@@ -8,7 +8,6 @@ export const Scoreboard = () => {
   const { styles } = useStyles(stylesheet);
   const { score, player1Mark } = useGame();
 
-  console.log("Scoreboard", score);
   return (
     <View style={styles.container}>
       <ScoreCard

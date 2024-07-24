@@ -5,13 +5,15 @@ import { createStyleSheet, useStyles } from "react-native-unistyles";
 import { useRouter } from "expo-router";
 
 import { Button } from "@/components/Button";
+import type { IconName } from "@/components/Icon";
 import { Icon } from "@/components/Icon";
+import type { TextColor } from "@/components/Text";
 import { Text } from "@/components/Text";
 import { useGame } from "@/features/game/hooks/useGame";
 
 export const GamePopUp = () => {
   const { styles } = useStyles(stylesheet);
-  const { winner, opponent, restart, quit } = useGame();
+  const { winner, opponent, player1Mark, restart, quit } = useGame();
   const router = useRouter();
 
   const handleQuit = () => {
@@ -24,7 +26,7 @@ export const GamePopUp = () => {
   };
 
   const createWinnerMessage = () => {
-    if (!winner) {
+    if (!winner || winner === "tie") {
       return "";
     }
 
@@ -35,6 +37,31 @@ export const GamePopUp = () => {
     }
   };
 
+  const createRoudMessage = () => {
+    if (winner === "tie") {
+      if (opponent === "p2") {
+        return "ROUND TIED";
+      }
+      if (opponent === "cpu") {
+        return "RESTART GAME?";
+      }
+    }
+
+    return "TAKES THE ROUND";
+  };
+
+  const iconMessage = (): IconName => {
+    return winner === "p1" && player1Mark === "X" ? "IconX" : "IconO";
+  };
+
+  const selectTextColor = (): TextColor => {
+    if (winner === "tie") {
+      return "silver";
+    }
+
+    return winner === "p1" && player1Mark === "X" ? "lightBlue" : "yellow";
+  };
+
   return (
     <Modal isVisible={!!winner}>
       <View style={styles.container}>
@@ -43,9 +70,9 @@ export const GamePopUp = () => {
         </Text>
 
         <View style={styles.textContainer}>
-          <Icon icon="IconX" size="$5" />
-          <Text variant="hm" color="lightBlue">
-            TAKES THE ROUND
+          {winner !== "tie" ? <Icon icon={iconMessage()} size="$5" /> : null}
+          <Text variant="hm" color={selectTextColor()}>
+            {createRoudMessage()}
           </Text>
         </View>
         <View style={styles.buttonContainer}>

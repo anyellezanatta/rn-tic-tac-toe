@@ -8,33 +8,45 @@ import type { IconName } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { TurnCard } from "@/features/game/components/TurnCard";
 import { useGame } from "@/features/game/hooks/useGame";
-import type { PlayerMark } from "@/features/game/store/gameSlice";
+import type { PlayerMark, PlayerType } from "@/features/game/store/gameSlice";
 
 type GameHeaderProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-const icons: Record<PlayerMark, IconName> = {
-  X: "IconX",
-  O: "IconO",
+const iconTurn = (
+  turn: PlayerType,
+  player1Mark: PlayerMark,
+  opponent: PlayerType,
+): IconName => {
+  switch (turn) {
+    case "p1":
+      if (player1Mark === "X") {
+        return "IconX";
+      } else {
+        return "IconO";
+      }
+
+    case opponent:
+      if (player1Mark === "X") {
+        return "IconO";
+      } else {
+        return "IconX";
+      }
+
+    default:
+      return "IconX";
+  }
 };
 
 export const GameHeader: FC<GameHeaderProps> = ({ style }) => {
   const { styles } = useStyles(stylesheet);
-  const { turn, player1Mark, restart } = useGame();
+  const { turn, player1Mark, opponent, restart } = useGame();
 
   return (
     <View style={[styles.container, style]}>
       <Logo style={styles.logo} />
-      <TurnCard
-        icon={
-          turn === "p1"
-            ? icons[player1Mark!]
-            : player1Mark === "X"
-              ? "IconX"
-              : "IconO"
-        }
-      />
+      <TurnCard icon={iconTurn(turn!, player1Mark!, opponent!)} />
       <Button
         style={styles.restartButton}
         size="secondary"

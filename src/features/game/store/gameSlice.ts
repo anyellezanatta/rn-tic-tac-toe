@@ -100,7 +100,6 @@ export const gameReducer = createSlice({
       state,
       action: PayloadAction<{ line: number; column: number }>,
     ) => {
-      console.log("playTurn");
       const { line, column } = action.payload;
       const newTable = [...state.gameState];
       if (state.turn !== undefined) {
@@ -140,13 +139,8 @@ export const gameReducer = createSlice({
       }
 
       const randomIndex = Math.floor(Math.random() * emptyCells.length);
-
       const [line, column] = emptyCells[randomIndex]!;
-      console.log("line", line, "column", column);
-
       newTable[line]![column] = "cpu";
-
-      console.log("newTable", newTable);
 
       state.turn = changeTurn("cpu", opponent!);
       state.gameState = newTable;
@@ -155,14 +149,11 @@ export const gameReducer = createSlice({
       if (state.winner) return;
 
       const { gameState } = state;
-
       const line = checkLines(gameState);
       const column = checkColumns(gameState);
       const diagonal = checkDiagonals(gameState);
-
-      console.log("line", line, "column", column, "diagonal", diagonal);
       const isWinner = line || column || diagonal;
-      console.log("isWinner", isWinner);
+
       if (isWinner) {
         state.winner = isWinner;
         if (isWinner === "p1") {
