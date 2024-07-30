@@ -32,51 +32,6 @@ const changeTurn = (turn: PlayerType, opponent: OpponentType): PlayerType => {
   return turn === "p1" ? opponent : "p1";
 };
 
-const checkSequence = (sequence: (PlayerType | undefined)[]): boolean => {
-  return sequence.every((cell) => cell === sequence[0]);
-};
-
-const checkLines = (gameState: PlayerType[][]): PlayerType | undefined => {
-  let winner: PlayerType | undefined = undefined;
-
-  gameState.forEach((line) => {
-    if (!winner) {
-      if (checkSequence(line)) {
-        winner = line[0];
-        return winner;
-      }
-    }
-  });
-
-  return winner;
-};
-
-const checkColumns = (gameState: PlayerType[][]): PlayerType | undefined => {
-  let column: (PlayerType | undefined)[] = [];
-
-  for (let i = 0; i < 3; i++) {
-    column = [gameState[0]![i], gameState[1]![i], gameState[2]![i]];
-    if (checkSequence(column)) {
-      return column[0];
-    }
-  }
-
-  return undefined;
-};
-
-const checkDiagonals = (gameState: PlayerType[][]): PlayerType | undefined => {
-  const diagonal1 = [gameState[0]![0], gameState[1]![1], gameState[2]![2]];
-  if (checkSequence(diagonal1)) {
-    return diagonal1[0];
-  }
-
-  const diagonal2 = [gameState[0]![2], gameState[1]![1], gameState[2]![0]];
-  if (checkSequence(diagonal2)) {
-    return diagonal2[0];
-  }
-  return undefined;
-};
-
 const checkTie = (gameState: PlayerType[][]): boolean => {
   return gameState.every((line) => line.every((cell) => cell !== undefined));
 };
@@ -148,14 +103,60 @@ export const gameReducer = createSlice({
       if (state.winner) return;
 
       const { gameState } = state;
-      const line = checkLines(gameState);
-      const column = checkColumns(gameState);
-      const diagonal = checkDiagonals(gameState);
-      const isWinner = line || column || diagonal;
 
-      if (isWinner) {
-        state.winner = isWinner;
-        if (isWinner === "p1") {
+      const lines: number[][][] = [];
+
+      // Add rows and columns to lines
+      for (let i = 0; i < 3; i++) {
+        lines.push([
+          [i, 0],
+          [i, 1],
+          [i, 2],
+        ]); // Rows
+        lines.push([
+          [0, i],
+          [1, i],
+          [2, i],
+        ]); // Columns
+      }
+
+      // Add diagonals to lines
+      lines.push([
+        [0, 0],
+        [1, 1],
+        [2, 2],
+      ]);
+      lines.push([
+        [0, 2],
+        [1, 1],
+        [2, 0],
+      ]);
+
+      const winner = lines.reduce<PlayerType | undefined>((winner, line) => {
+        if (winner) return winner;
+
+        // const [[x0, y0], [x1, y1], [x2, y2]] = line;
+        const [first, second, third] = line!;
+
+        // Ensure that each coordinate is a pair of numbers
+        const [x0, y0] = first!;
+        const [x1, y1] = second!;
+        const [x2, y2] = third!;
+
+        if (
+          gameState[x0!]![y0!] === gameState[x1!]![y1!] &&
+          gameState[x1!]![y1!] === gameState[x2!]![y2!] &&
+          gameState[x0!]![y0!] !== undefined
+        ) {
+          return gameState[x0!]![y0!];
+        }
+
+        return undefined;
+      }, undefined);
+
+      if (winner) {
+        state.winner = winner;
+        if (winner === "p1") {
           state.score.player1 += 1;
         } else {
           state.score.opponent += 1;
