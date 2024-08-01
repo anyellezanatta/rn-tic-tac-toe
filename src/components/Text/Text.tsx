@@ -17,7 +17,7 @@ export const Text: FC<TextProps> = (props) => {
   });
 
   return (
-    <RNText {...rest} style={[styles.text, style]}>
+    <RNText accessibilityRole="text" {...rest} style={[styles.text, style]}>
       {props.children}
     </RNText>
   );

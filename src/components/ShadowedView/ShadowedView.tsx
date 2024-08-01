@@ -36,6 +36,7 @@ export const ShadowedView: FC<ShadowedViewProps> = (props) => {
 
   return (
     <View
+      accessibilityLabel="ShadowedView"
       style={[styles.innerShadow(isShadowed), { borderRadius }, style]}
       {...rest}>
       <Animated.View

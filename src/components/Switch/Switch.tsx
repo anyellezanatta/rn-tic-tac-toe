@@ -65,7 +65,10 @@ export const Switch: FC<SwitchControlProps> = (props) => {
   };
 
   return (
-    <Pressable style={[styles.container, style]} onPress={handlePress}>
+    <Pressable
+      accessibilityRole="switch"
+      style={[styles.container, style]}
+      onPress={handlePress}>
       <View style={styles.track} onLayout={onLayout}>
         <Animated.View style={[styles.indicator, animatedIndicatorStyles]} />
         <View style={styles.segmentsContainer}>

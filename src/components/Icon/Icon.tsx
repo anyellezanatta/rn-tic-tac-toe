@@ -25,6 +25,7 @@ export const Icon: FC<IconProps> = (props) => {
   return (
     <IconComponent
       accessibilityRole="image"
+      aria-label={icon}
       accessibilityLabel={icon}
       width={iconSize}
       height={iconSize}
