@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1A2A33"
     },
     "ios": {
       "bundleIdentifier": "com.anyelle.tictactoe",
@@ -20,7 +20,7 @@
       "package": "com.anyelle.tictactoe",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#1A2A33"
       }
     },
     "plugins": [

@@ -2105,6 +2105,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gorhom/portal@npm:^1.0.14":
+  version: 1.0.14
+  resolution: "@gorhom/portal@npm:1.0.14"
+  dependencies:
+    nanoid: "npm:^3.3.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/86f33afc2ac2656a86a6f3fd1e41565419839576ede2c38333434a93a0a2fe4fb6fc18ab3360579427f2a1fc3b4564b933cc5ae1793a7e2825c93860a00b215f
+  languageName: node
+  linkType: hard
+
 "@graphql-typed-document-node/core@npm:^3.1.0":
   version: 3.2.0
   resolution: "@graphql-typed-document-node/core@npm:3.2.0"
@@ -11761,7 +11773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.23, nanoid@npm:^3.3.7":
+"nanoid@npm:^3.1.23, nanoid@npm:^3.3.1, nanoid@npm:^3.3.7":
   version: 3.3.7
   resolution: "nanoid@npm:3.3.7"
   bin:
@@ -12721,7 +12733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.10, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.10, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -12941,15 +12953,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-animatable@npm:1.3.3":
-  version: 1.3.3
-  resolution: "react-native-animatable@npm:1.3.3"
-  dependencies:
-    prop-types: "npm:^15.7.2"
-  checksum: 10c0/ce18b871c29d17377c08aa143be64d06e20df8e669720d2fe4eed5465c37ac4e6ebbfb4464aecb23e3e22d82114768dfacb65b0c49c33dd736f54a0507265641
-  languageName: node
-  linkType: hard
-
 "react-native-helmet-async@npm:2.0.4":
   version: 2.0.4
   resolution: "react-native-helmet-async@npm:2.0.4"
@@ -12981,19 +12984,6 @@ __metadata:
   dependencies:
     prop-types: "npm:^15.5.10"
   checksum: 10c0/651c6b6b0f1c2d82e372f3188ad5a8eb478728135a05b1c97315646f4fdbee446a0dd5bc8f79a96e7ab379a08c0a04bcdb2911f7dcf3bb6511f0cced7d55f0f0
-  languageName: node
-  linkType: hard
-
-"react-native-modal@npm:^13.0.1":
-  version: 13.0.1
-  resolution: "react-native-modal@npm:13.0.1"
-  dependencies:
-    prop-types: "npm:^15.6.2"
-    react-native-animatable: "npm:1.3.3"
-  peerDependencies:
-    react: "*"
-    react-native: ">=0.65.0"
-  checksum: 10c0/8ec5728c2a27eb31c97451968b4ecefdf005afda51fab2fc864fc442122573c70f7bf3fa0c6e3bd1d6aab3565c684104d1d30df916c3f9a6c7c3223e4d3b9249
   languageName: node
   linkType: hard
 
@@ -14764,6 +14754,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@commitlint/cli": "npm:^19.3.0"
     "@commitlint/config-conventional": "npm:^19.2.2"
+    "@gorhom/portal": "npm:^1.0.14"
     "@jest/globals": "npm:^29.7.0"
     "@react-native-async-storage/async-storage": "npm:^1.23.1"
     "@react-native-community/datetimepicker": "npm:^8.1.1"
@@ -14795,7 +14786,6 @@ __metadata:
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     react-native: "npm:0.74.2"
-    react-native-modal: "npm:^13.0.1"
     react-native-reanimated: "npm:~3.10.1"
     react-native-safe-area-context: "npm:4.10.1"
     react-native-screens: "npm:3.31.1"

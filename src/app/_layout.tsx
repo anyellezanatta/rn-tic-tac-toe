@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import { PortalProvider } from "@gorhom/portal";
 import { ThemeProvider } from "@react-navigation/native";
 
 import { useAppLoading } from "@/hooks/useAppLoading";
@@ -26,9 +27,11 @@ const AppLayout = () => {
     <Provider store={store}>
       <StatusBar style="auto" />
       <ThemeProvider value={DarkNavigationTheme}>
-        <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }} />
-        </SafeAreaProvider>
+        <PortalProvider>
+          <SafeAreaProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+          </SafeAreaProvider>
+        </PortalProvider>
       </ThemeProvider>
     </Provider>
   );

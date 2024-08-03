@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import Modal from "react-native-modal";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { useRouter } from "expo-router";
@@ -17,8 +17,8 @@ export const GamePopUp = () => {
   const router = useRouter();
 
   const handleQuit = () => {
-    router.navigate("/");
     quit();
+    router.navigate("/");
   };
 
   const handleNextRound = () => {
@@ -62,8 +62,15 @@ export const GamePopUp = () => {
     return winner === "p1" && player1Mark === "X" ? "lightBlue" : "yellow";
   };
 
+  if (!winner) {
+    return null;
+  }
+
   return (
-    <Modal isVisible={!!winner}>
+    <Animated.View
+      style={styles.modal}
+      entering={FadeInDown}
+      exiting={FadeOutDown}>
       <View style={styles.container}>
         <Text variant="body" color="silver">
           {createWinnerMessage()}
@@ -90,11 +97,22 @@ export const GamePopUp = () => {
           />
         </View>
       </View>
-    </Modal>
+    </Animated.View>
   );
 };
 
 const stylesheet = createStyleSheet((theme) => ({
+  modal: {
+    flex: 1,
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 1000,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
   container: {
     alignItems: "center",
     backgroundColor: theme.colors.semiDarkNavy,

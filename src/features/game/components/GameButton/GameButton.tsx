@@ -16,6 +16,7 @@ export const GameButton: FC<GameButtonProps> = (props) => {
 
   return (
     <Pressable
+      accessibilityRole="button"
       {...props}
       style={style}
       onPress={onPress}
