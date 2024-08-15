@@ -1,12 +1,11 @@
 import { View } from "react-native";
-import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { useRouter } from "expo-router";
 
-import { Button } from "@/components/Button";
 import type { IconName } from "@/components/Icon";
 import { Icon } from "@/components/Icon";
+import { PopUp } from "@/components/PopUp";
 import type { TextColor } from "@/components/Text";
 import { Text } from "@/components/Text";
 import { useGame } from "@/features/game/hooks/useGame";
@@ -67,63 +66,26 @@ export const GamePopUp = () => {
   }
 
   return (
-    <Animated.View
-      style={styles.modal}
-      entering={FadeInDown}
-      exiting={FadeOutDown}>
-      <View style={styles.container}>
-        <Text variant="body" color="silver">
-          {createWinnerMessage()}
-        </Text>
+    <PopUp
+      buttonLeftText="QUIT"
+      buttonRightText="NEXT ROUND"
+      onButtonLeftPress={handleQuit}
+      onButtonRightPress={handleNextRound}>
+      <Text variant="body" color="silver">
+        {createWinnerMessage()}
+      </Text>
 
-        <View style={styles.textContainer}>
-          {winner !== "tie" ? <Icon icon={iconMessage()} size="$5" /> : null}
-          <Text variant="hm" color={selectTextColor()}>
-            {createRoudMessage()}
-          </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            size="secondary"
-            color="silver"
-            title="QUIT"
-            onPress={handleQuit}
-          />
-          <Button
-            size="secondary"
-            color="yellow"
-            title="NEXT ROUND"
-            onPress={handleNextRound}
-          />
-        </View>
+      <View style={styles.textContainer}>
+        {winner !== "tie" ? <Icon icon={iconMessage()} size="$5" /> : null}
+        <Text variant="hm" color={selectTextColor()}>
+          {createRoudMessage()}
+        </Text>
       </View>
-    </Animated.View>
+    </PopUp>
   );
 };
 
 const stylesheet = createStyleSheet((theme) => ({
-  modal: {
-    flex: 1,
-    justifyContent: "center",
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    zIndex: 1000,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  container: {
-    alignItems: "center",
-    backgroundColor: theme.colors.semiDarkNavy,
-    padding: theme.spacing.$12,
-    paddingTop: theme.spacing.$10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    gap: theme.spacing.$4,
-    marginTop: theme.spacing.$8,
-  },
   textContainer: {
     flexDirection: "row",
     alignItems: "center",

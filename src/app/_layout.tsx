@@ -9,7 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import { PortalProvider } from "@gorhom/portal";
 import { ThemeProvider } from "@react-navigation/native";
 
-import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorFallback } from "@/components/ErrorFallback";
 import { useAppLoading } from "@/hooks/useAppLoading";
 import { useDevMenu } from "@/hooks/useDevMenu";
