@@ -6,7 +6,6 @@ import { Portal } from "@gorhom/portal";
 import { GameHeader } from "@/features/game/components/GameHeader/GameHeader";
 import { GamePopUp } from "@/features/game/components/GamePopUp";
 import { GameTable } from "@/features/game/components/GameTable";
-import { RestartPopUp } from "@/features/game/components/RestartPopUp";
 import { Scoreboard } from "@/features/game/components/Scoreboard";
 
 const GamePage = () => {
@@ -19,7 +18,6 @@ const GamePage = () => {
       <Scoreboard />
       <Portal>
         <GamePopUp />
-        <RestartPopUp />
       </Portal>
     </View>
   );
