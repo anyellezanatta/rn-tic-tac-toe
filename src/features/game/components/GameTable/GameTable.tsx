@@ -8,7 +8,7 @@ import type { PlayerType } from "@/features/game/store/gameSlice";
 
 export const GameTable: FC = () => {
   const { styles } = useStyles(stylesheet);
-  const { play, table, winner, player1Mark } = useGame();
+  const { play, table, winner, player1Mark, turn } = useGame();
 
   const getMark = (player: PlayerType) => {
     return player === undefined
@@ -25,7 +25,7 @@ export const GameTable: FC = () => {
         key={String(player) + i + lineIndex}
         assignedMark={getMark(player)}
         onPress={() => play(lineIndex, i)}
-        disabled={!!player || !!winner}
+        disabled={!!player || !!winner || turn === "cpu"}
       />
     ));
   };

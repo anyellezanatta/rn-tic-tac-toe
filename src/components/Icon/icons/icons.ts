@@ -1,3 +1,4 @@
+import { IconError } from "./IconError";
 import { IconO } from "./IconO";
 import { IconOOutline } from "./IconOOutline";
 import { IconRestart } from "./IconRestart";
@@ -10,6 +11,7 @@ export const Icons = {
   IconRestart,
   IconX,
   IconXOutline,
+  IconError,
 };
 
 export type IconName = keyof typeof Icons;

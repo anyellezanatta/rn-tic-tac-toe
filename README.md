@@ -33,6 +33,7 @@ To ensure the code quality, the project is configured with standard tooling that
 yarn compile
 yarn lint
 yarn format
+yarn test
 ```
 
 ## Technical stack
@@ -44,3 +45,5 @@ yarn format
 - Redux
 - Expo-router
 - StoryBook
+- React Native Testing Library
+- Jest

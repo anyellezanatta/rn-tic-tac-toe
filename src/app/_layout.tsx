@@ -9,6 +9,8 @@ import { StatusBar } from "expo-status-bar";
 import { PortalProvider } from "@gorhom/portal";
 import { ThemeProvider } from "@react-navigation/native";
 
+import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
+import { ErrorFallback } from "@/components/ErrorFallback";
 import { useAppLoading } from "@/hooks/useAppLoading";
 import { useDevMenu } from "@/hooks/useDevMenu";
 import store from "@/store/store";
@@ -27,11 +29,13 @@ const AppLayout = () => {
     <Provider store={store}>
       <StatusBar style="auto" />
       <ThemeProvider value={DarkNavigationTheme}>
-        <PortalProvider>
-          <SafeAreaProvider>
-            <Stack screenOptions={{ headerShown: false }} />
-          </SafeAreaProvider>
-        </PortalProvider>
+        <ErrorBoundary fallback={<ErrorFallback />}>
+          <PortalProvider>
+            <SafeAreaProvider>
+              <Stack screenOptions={{ headerShown: false }} />
+            </SafeAreaProvider>
+          </PortalProvider>
+        </ErrorBoundary>
       </ThemeProvider>
     </Provider>
   );
