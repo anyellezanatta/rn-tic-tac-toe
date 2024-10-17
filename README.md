@@ -2,6 +2,8 @@
 
 It is a classic Tic-Tac-Toe game you can play with one or two players.
 
+<img src="https://github.com/user-attachments/assets/b503f07f-579b-4676-97ef-a041451a7607" alt="Game Demo" width="300"/>
+
 ## Technical stack
 
 - Expo
