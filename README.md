@@ -1,4 +1,4 @@
-# Tic-Tac-Toe Game
+# React Native Tic-tac-toe game
 
 It is a classic Tic-Tac-Toe game you can play with one or two players.
 
