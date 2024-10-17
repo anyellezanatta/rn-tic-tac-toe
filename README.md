@@ -1,8 +1,8 @@
-# React Native Tic-tac-toe game
+# React Native tic-tac-toe game
 
-It is a classic Tic-Tac-Toe game you can play with one or two players.
+It is a classic tic-tac-toe game you can play with one or two players.
 
-<img src="https://github.com/user-attachments/assets/b503f07f-579b-4676-97ef-a041451a7607" alt="Game Demo" width="300"/>
+<img src="https://github.com/user-attachments/assets/b503f07f-579b-4676-97ef-a041451a7607" alt="Game Demo" width="240"/>
 
 ## Technical stack
 
@@ -55,7 +55,7 @@ The `features` folder contains the many features present in the project, in this
 - **theme**: Defines theming for the app, such as sizes, colors, and other design tokens.
 - **features**: A modular collection of the app’s features. Each feature is self-contained, like a mini-project that can consume resources from outside but remains isolated. Each feature can have its own components, store, services, and hooks.
 
-#### Components
+## Components
 
 The `components` folder holds design system components, such as buttons or text fields. These are abstract, reusable UI elements without application-specific logic, organized to scale easily. Each component is accompanied by:
 
