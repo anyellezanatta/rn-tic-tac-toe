@@ -31,6 +31,14 @@ yarn ios
 yarn android
 ```
 
+## Testing
+
+The project is equipped with testing capabilities using Jest and React Native Testing Library for thorough component testing. The codebase maintains over 80% test coverage, ensuring solid reliability. You can run tests with:
+
+```bash
+yarn test
+```
+
 ## Linting, Formatting and Type Checking
 
 To ensure the code quality, the project is configured with standard tooling that is used in any mature project. That is ESlint, Prettier and Typescript. There are useful tasks that help ensure the project is following its standards. You can run them individually as needed.
@@ -40,6 +48,10 @@ yarn compile
 yarn lint
 yarn format
 ```
+
+### Pre-commit checks / Commit-message checks
+
+Husky, a tool to integrate with git hooks is used for ensuring extra code quality for commit messages (via `commitlint`) and running all the checks before commit (formatting, linters and testing).
 
 ## Project Structure
 
@@ -68,20 +80,14 @@ As an additional feature, the project includes a Storybook setup, which can be a
 
 To access Storybook, open the developer menu while running the app in a simulator.
 
+
+
 ## State Management
 
 The game’s state management uses modern Redux Toolkit based practices. The logic is fully separated from the components, making it easier to test and maintain. Key Redux Toolkit features used in the project include:
 
 - **Slices**: For modular state management, with typed actions, reducers, and selectors.
 - **Listener Middleware**: For reacting to state changes and managing side effects efficiently.
-
-## Testing
-
-The project is equipped with testing capabilities using Jest and React Native Testing Library for thorough component testing. The codebase maintains over 80% test coverage, ensuring solid reliability. You can run tests with:
-
-```bash
-yarn test
-```
 
 ## Error handling
 
