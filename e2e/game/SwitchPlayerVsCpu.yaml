@@ -1,0 +1,9 @@
+appId: com.anyelle.tictactoe
+---
+- launchApp
+- tapOn: switch
+- tapOn: NEW GAME (VS CPU)
+# Since X always starts
+- assertVisible: Cell.*X
+- assertNotVisible: Cell.*O
+- assertVisible: .*O TURN

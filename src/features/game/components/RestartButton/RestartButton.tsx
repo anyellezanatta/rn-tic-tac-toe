@@ -35,6 +35,7 @@ export const RestartButton = () => {
         icon="IconRestart"
         IconProps={{ size: "$4" }}
         onPress={handleConfirmationPress}
+        accessibilityLabel="Restart Game"
       />
       <Portal>
         {isRestarting && (

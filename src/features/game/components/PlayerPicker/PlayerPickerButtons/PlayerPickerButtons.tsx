@@ -27,7 +27,7 @@ export const PlayerPickerButtons = () => {
       />
       <Button
         color="lightBlue"
-        title="NEW GAME  (VS PLAYER)"
+        title="NEW GAME (VS PLAYER)"
         onPress={() => startGame("p2")}
       />
     </View>

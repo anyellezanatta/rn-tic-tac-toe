@@ -1,0 +1,8 @@
+appId: com.anyelle.tictactoe
+---
+- launchApp
+- tapOn: NEW GAME (VS CPU)
+# Presses on any empty cell to perform a P1 move
+- tapOn: .*Empty
+- assertVisible: Cell.*X
+- assertVisible: Cell.*O

@@ -1,0 +1,10 @@
+appId: com.anyelle.tictactoe
+---
+- launchApp
+- tapOn: NEW GAME (VS PLAYER)
+- tapOn: .*Empty
+- tapOn: Restart Game
+- tapOn: YES, RESTART
+- assertNotVisible: Cell.*X
+- assertNotVisible: Cell.*O
+- assertVisible: .*X TURN

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { StyleProp, ViewStyle } from "react-native";
+import type { ViewProps } from "react-native";
 import { Pressable } from "react-native";
 import {
   interpolateColor,
@@ -18,13 +18,12 @@ import { ShadowedView } from "@/components/ShadowedView";
 import type { TextProps } from "@/components/Text";
 import { Text } from "@/components/Text";
 
-export type ButtonProps = {
+export type ButtonProps = ViewProps & {
   color?: ShadowedViewColor;
   size?: ShadowedViewSize;
   title?: string;
   icon?: IconName;
   IconProps?: Omit<IconProps, "icon">;
-  style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   disabled?: boolean;
 };
@@ -39,6 +38,7 @@ export const Button: FC<ButtonProps> = (props) => {
     style,
     onPress,
     disabled,
+    ...rest
   } = props;
 
   const pressed = useSharedValue<number>(0);
@@ -97,6 +97,7 @@ export const Button: FC<ButtonProps> = (props) => {
 
   return (
     <Pressable
+      {...rest}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       style={style}

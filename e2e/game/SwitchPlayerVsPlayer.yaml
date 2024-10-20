@@ -1,0 +1,12 @@
+appId: com.anyelle.tictactoe
+---
+- launchApp
+- tapOn: switch
+- tapOn: NEW GAME (VS PLAYER)
+- assertVisible: .*X TURN
+# Presses on any empty cell to perform a move
+- tapOn: .*Empty
+# Since X always starts
+- assertVisible: Cell.*X
+- assertNotVisible: Cell.*O
+- assertVisible: .*O TURN

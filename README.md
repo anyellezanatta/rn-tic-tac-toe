@@ -13,8 +13,9 @@ It is a classic tic-tac-toe game you can play with one or two players.
 - Redux Toolkit
 - Expo-router
 - StoryBook
-- React Native Testing Library
 - Jest
+- React Native Testing Library
+- Maestro (E2E)
 
 ## Running
 
@@ -31,13 +32,23 @@ yarn ios
 yarn android
 ```
 
-## Testing
+## Running unit and component tests
 
 The project is equipped with testing capabilities using Jest and React Native Testing Library for thorough component testing. The codebase maintains over 80% test coverage, ensuring solid reliability. You can run tests with:
 
 ```bash
 yarn test
 ```
+
+## E2E Tests
+
+Run the tests with:
+
+```bash
+yarn test:e2e
+```
+
+The tests are done with `maestro`, a popular and easy to use framework for writing this type of test in React Native. The main app flows are covered with e2e tests.
 
 ## Linting, Formatting and Type Checking
 
@@ -55,7 +66,7 @@ Husky, a tool to integrate with git hooks is used for ensuring extra code qualit
 
 ## Project Structure
 
-This project is designed to be simple yet scalable, with an organized structure to accommodate future growth, even if not currently required. 
+This project is designed to be simple yet scalable, with an organized structure to accommodate future growth, even if not currently required.
 The outer `app` folder contains reusable parts that are foundational across the entire application, such as core components, basic hooks, and store configuration.
 The `features` folder contains the many features present in the project, in this case, a single "game" feature.
 
@@ -79,8 +90,6 @@ The `components` folder holds design system components, such as buttons or text 
 As an additional feature, the project includes a Storybook setup, which can be accessed via the developer menu. This provides an interactive view of all design system components, allowing you to play with props and inspect how components behave. This feature acts as both developer documentation and a design reference.
 
 To access Storybook, open the developer menu while running the app in a simulator.
-
-
 
 ## State Management
 

@@ -20,14 +20,21 @@ export const GameTable: FC = () => {
           : "X";
   };
   const generateLines = (line: PlayerType[], lineIndex: number) => {
-    return line.map((player, i) => (
-      <GameButton
-        key={String(player) + i + lineIndex}
-        assignedMark={getMark(player)}
-        onPress={() => play(lineIndex, i)}
-        disabled={!!player || !!winner || turn === "cpu"}
-      />
-    ));
+    return line.map((player, column) => {
+      const assignedMark = getMark(player);
+      const cellPosition = `Cell Line ${lineIndex + 1} Column ${column + 1}`;
+      const accessibilityLabel = `${cellPosition}: ${assignedMark ? assignedMark : "Empty"}`;
+
+      return (
+        <GameButton
+          key={String(player) + column + lineIndex}
+          assignedMark={assignedMark}
+          onPress={() => play(lineIndex, column)}
+          disabled={!!player || !!winner || turn === "cpu"}
+          accessibilityLabel={accessibilityLabel}
+        />
+      );
+    });
   };
 
   return (

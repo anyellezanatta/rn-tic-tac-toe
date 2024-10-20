@@ -1,0 +1,5 @@
+appId: com.anyelle.tictactoe
+---
+- runFlow: PlayerVsPlayerP2Victory.yaml
+- tapOn: QUIT
+- assertVisible: PICK PLAYER 1'S MARK

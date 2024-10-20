@@ -1,17 +1,16 @@
-import type { ComponentProps, FC, ReactNode } from "react";
-import type { StyleProp, ViewStyle } from "react-native";
+import type { ComponentProps, FC } from "react";
+import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import Animated from "react-native-reanimated";
 import type { UnistylesVariants } from "react-native-unistyles";
 import { createStyleSheet, useStyles } from "react-native-unistyles";
 
-type ShadowedViewProps = UnistylesVariants<typeof stylesheet> & {
-  style?: StyleProp<ViewStyle>;
-  containerStyle?: ComponentProps<Animated.View>["style"];
-  children?: ReactNode;
-  borderRadius?: number;
-  isShadowed?: boolean;
-};
+type ShadowedViewProps = ViewProps &
+  UnistylesVariants<typeof stylesheet> & {
+    containerStyle?: ComponentProps<Animated.View>["style"];
+    borderRadius?: number;
+    isShadowed?: boolean;
+  };
 
 export type ShadowedViewSize = Exclude<ShadowedViewProps["size"], undefined>;
 
@@ -36,7 +35,6 @@ export const ShadowedView: FC<ShadowedViewProps> = (props) => {
 
   return (
     <View
-      accessibilityLabel="ShadowedView"
       style={[styles.innerShadow(isShadowed), { borderRadius }, style]}
       {...rest}>
       <Animated.View

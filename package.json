@@ -17,6 +17,7 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "test": "NODE_ENV=test jest --passWithNoTests",
+    "test:e2e": "maestro test e2e",
     "prepare": "husky",
     "storybook-generate": "sb-rn-get-stories"
   },

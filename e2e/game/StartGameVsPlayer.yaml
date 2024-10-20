@@ -1,0 +1,10 @@
+appId: com.anyelle.tictactoe
+---
+- launchApp
+- tapOn: NEW GAME (VS PLAYER)
+# PLayer 1
+- tapOn: "Cell Line 1 Column 1: Empty"
+# Player 2
+- tapOn: "Cell Line 1 Column 3: Empty"
+- assertVisible: Cell.*X
+- assertVisible: Cell.*O
