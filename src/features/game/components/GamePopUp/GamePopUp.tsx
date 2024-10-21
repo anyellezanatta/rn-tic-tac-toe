@@ -3,7 +3,6 @@ import { createStyleSheet, useStyles } from "react-native-unistyles";
 
 import { useRouter } from "expo-router";
 
-import type { IconName } from "@/components/Icon";
 import { Icon } from "@/components/Icon";
 import { PopUp } from "@/components/PopUp";
 import type { TextColor } from "@/components/Text";
@@ -14,6 +13,11 @@ export const GamePopUp = () => {
   const { styles } = useStyles(stylesheet);
   const { winner, opponent, player1Mark, restart, quit } = useGame();
   const router = useRouter();
+  const iconWinner =
+    (winner === "p1" && player1Mark === "X") ||
+    (winner === "p2" && player1Mark === "O")
+      ? "IconX"
+      : "IconO";
 
   const handleQuit = () => {
     quit();
@@ -49,16 +53,15 @@ export const GamePopUp = () => {
     return "TAKES THE ROUND";
   };
 
-  const iconMessage = (): IconName => {
-    return winner === "p1" && player1Mark === "X" ? "IconX" : "IconO";
-  };
-
   const selectTextColor = (): TextColor => {
     if (winner === "tie") {
       return "silver";
     }
 
-    return winner === "p1" && player1Mark === "X" ? "lightBlue" : "yellow";
+    return (winner === "p1" && player1Mark === "X") ||
+      (winner === "p2" && player1Mark === "O")
+      ? "lightBlue"
+      : "yellow";
   };
 
   if (!winner) {
@@ -76,7 +79,7 @@ export const GamePopUp = () => {
       </Text>
 
       <View style={styles.textContainer}>
-        {winner !== "tie" ? <Icon icon={iconMessage()} size="$5" /> : null}
+        {winner !== "tie" ? <Icon icon={iconWinner} size="$5" /> : null}
         <Text variant="hm" color={selectTextColor()}>
           {createRoudMessage()}
         </Text>
