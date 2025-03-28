@@ -3,6 +3,7 @@
     "name": "tic-tac-toe",
     "slug": "tic-tac-toe",
     "version": "1.0.0",
+    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",

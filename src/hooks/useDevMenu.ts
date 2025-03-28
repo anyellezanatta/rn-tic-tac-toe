@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { DevMenu, isDevelopmentBuild } from "expo-dev-client";
+import { isDevelopmentBuild, registerDevMenuItems } from "expo-dev-client";
 import { useRouter } from "expo-router";
 
 export const useDevMenu = () => {
@@ -9,7 +9,7 @@ export const useDevMenu = () => {
   useEffect(() => {
     if (!isDevelopmentBuild()) return;
 
-    DevMenu.registerDevMenuItems([
+    registerDevMenuItems([
       {
         name: "Open storybook",
         shouldCollapse: true,
